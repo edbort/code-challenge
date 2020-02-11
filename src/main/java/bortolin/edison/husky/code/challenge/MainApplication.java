@@ -33,6 +33,8 @@ public class MainApplication {
                 
                 CacheHandler cacheHandler = new CacheHandler(repository, memCacheHandler);
                 cacheHandler.buildAll();
+                
+                log.info("Application is Ready!");
             } catch (Exception ex) {
                 log.error("Memcache problem. Can't continue", ex);
             }
