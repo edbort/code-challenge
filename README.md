@@ -2,14 +2,14 @@
 
 Here it is my implementation of Husky challenge, using Java with SpringBoot.
 
-## Requiriment
+## Requirement
 
-In order to build and run you need:
+In order to build and run you will need:
 
-1 - A Postgres database.
-2 - A Memcache daemon (memcached on linux).
-3 - Java 8.
-4 - Maven.
+ 1 - A Postgres database.
+ 2 - A Memcache daemon (memcached on linux).
+ 3 - Java 8.
+ 4 - Maven.
 
 ## Build and Run
 
@@ -53,3 +53,6 @@ As soon as the application started, for the first time, a new table will be crea
 After that, the App will build all caches for all 200 accounts (id from 1 to 200).
 
 The message "Application is Ready!" will be displayed after the boot proccess. 
+
+## Testing
+
