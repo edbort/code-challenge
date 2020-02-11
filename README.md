@@ -1,3 +1,16 @@
+Here it is my implementation of Husky challenge, using Java with SpringBoot.
+
+Java 8 and Maven is required to build and run. 
+
+```
+git clone https://github.com/edbort/code-challenge.git
+cd code-challenge
+mvn package
+java -jar ./target/husky-code-challenge-0.0.1-SNAPSHOT.jar --server.port=8080
+```
+
+
+
 # Husky challenge!
 
 ### Goal
