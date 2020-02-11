@@ -64,6 +64,6 @@ Take a look at postman file (or Java Classes at controller package) to find out 
 
 The DailyBaseCache is the is the last, the smallest doll, and represents all moviments for an specific account, for a specific date (single day).
 
-
+to be continued
 
 
