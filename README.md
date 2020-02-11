@@ -1,4 +1,23 @@
+# Husky challenge implementation!
+
 Here it is my implementation of Husky challenge, using Java with SpringBoot.
+
+First of all, consider changing some settings in application.properties file.
+
+```
+spring.jpa.database=POSTGRESQL
+spring.datasource.platform=postgres
+spring.jpa.show-sql=false
+spring.jpa.hibernate.ddl-auto=update
+spring.database.driverClassName=org.postgresql.Driver
+spring.datasource.url=jdbc:postgresql://localhost:5432/husky-code-challene
+spring.datasource.username=postgres
+spring.datasource.password=postgres
+memcache.host=localhost
+memcache.port=11211
+```
+
+A postgres database should be create before running the application. I also included a MySQL driver, despite my will.
 
 Java 8 and Maven is required to build and run. 
 
@@ -8,7 +27,6 @@ cd code-challenge
 mvn package
 java -jar ./target/husky-code-challenge-0.0.1-SNAPSHOT.jar --server.port=8080
 ```
-
 
 
 # Husky challenge!
