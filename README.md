@@ -58,4 +58,4 @@ The message "Application is Ready!" will be displayed after the boot proccess.
 
 Take a look at postman file (or Java Classes at controller package) to find out what could be done.
 
-
+[Postman file](https://github.com/edbort/code-challenge/blob/master/Husky%20Challeng%20Test.postman_collection.json)
