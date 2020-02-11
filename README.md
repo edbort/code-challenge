@@ -56,3 +56,6 @@ The message "Application is Ready!" will be displayed after the boot proccess.
 
 ## Testing
 
+Take a look at postman file (or Java Classes at controller package) to find out what could be done.
+
+
