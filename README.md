@@ -1,31 +1,55 @@
-# Husky challenge!
+# Husky challenge implementation!
 
-### Goal
-Implement a Russian Doll (or any better strategy) cache for a bank statement receipt
+Here it is my implementation of Husky challenge, using Java with SpringBoot.
 
-### Description and general information
+## Requiriment
 
-Imagine that you have a bank statement, with a filter that returns the last 3 days, 15 days, or 30 days data. 
+In order to build and run you need:
 
-That information is pretty much unchanged from the database entries perspectives: what is paid is paid (debit), amounts credited were credited. There is no reason to query it every single time that you open your banking app. This imaginary banking app is querying all results from the DB every time.
+1 - A Postgres database.
+2 - A Memcache daemon (memcached on linux).
+3 - Java 8.
+4 - Maven.
 
-We'd like to have a straightforward way to implement a cache for any entry point of this API that follows similar behavior. This cache "module" should be easily extendable, isolated, and flexible if the business now requires evicts or reloadings of cached data.
+## Build and Run
 
-### Expected result
+First of all, consider changing some settings in application.properties file.
 
-1 - We'd like to see a POC, including some Unit tests that prove the chosen cache strategy.
+```
+spring.jpa.database=POSTGRESQL
+spring.datasource.platform=postgres
+spring.jpa.show-sql=false
+spring.jpa.hibernate.ddl-auto=update
+spring.database.driverClassName=org.postgresql.Driver
+spring.datasource.url=jdbc:postgresql://localhost:5432/husky-code-challene
+spring.datasource.username=postgres
+spring.datasource.password=postgres
+memcache.host=localhost
+memcache.port=11211
+```
 
-2 - We'd like to see some stress test consuming your API endpoint that serves the bank statement JSON
+A postgres database should be create before running the application. I also included a MySQL driver, despite my will.
 
-3 - Memory and cloud storage are currently cheap. We expect you to use a production-ready infrastructure like Memcached or Redis.
+Java 8 and Maven should already be installed and available on shell. 
 
-4 - An isolated module that we can use as a DSL to evict or include new cache keys reloading current data
+```
+git clone https://github.com/edbort/code-challenge.git
+cd code-challenge
+mvn package
+```
 
-5 - Is there a recovery strategy? And if all cached data goes away, how do we query and cache everything back?
+I can send you guys the final jar file so you don't need to care about the compilling proccess.
 
-6 - You'll explain to the team your approach and defend the pros and cons of your strategy. There is no silver bullet, and we expect that you will be able to explain to us what are the stronger and the weaker points of the chosen strategy.
-It should be a piece of code that you studied a little to figure out and are proud of enough to explain to other people.
+The server (tomcat) will listen to TCP port 8080 as default but you can easly change it.
 
-### Resources
-Russian Doll Cache strategy overview on Basecamp: https://youtu.be/ktZLpjCanvg?t=69
-https://signalvnoise.com/posts/3690-the-performance-impact-of-russian-doll-caching
+```
+java -jar ./target/husky-code-challenge-0.0.1-SNAPSHOT.jar --server.port=8080
+```
+
+At the moment, the application does not expected any kind of authentication from MemCache server. You can only set the host and port to connect to.
+
+As soon as the application started, for the first time, a new table will be created in the specified database and a lot of records (mock data) will be created. It can take some time, please be patient. Something arround 400.000 will be created for tests purposes.
+
+After that, the App will build all caches for all 200 accounts (id from 1 to 200).
+
+The message "Application is Ready!" will be displayed after the boot proccess. 
