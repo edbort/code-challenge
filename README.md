@@ -6,10 +6,10 @@ Here it is my implementation of Husky challenge, using Java with SpringBoot.
 
 In order to build and run you will need:
 
-  1 - A Postgres database.
-  2 - A Memcache daemon (memcached on linux).
-  3 - Java 8.
-  4 - Maven.
+1. A Postgres database.
+2. A Memcache daemon (memcached on linux).
+3. Java 8.
+4. Maven.
 
 ## Build and Run
 
