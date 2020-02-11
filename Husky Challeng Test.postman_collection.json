@@ -1,0 +1,80 @@
+{
+	"info": {
+		"_postman_id": "6e6e97f8-a246-4749-b14a-2089fb0d556d",
+		"name": "Husky Challeng Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:8080/account/movement/50/3",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/account/movement/50/3",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"account",
+						"movement",
+						"50",
+						"3"
+					]
+				},
+				"description": "Get all account movement from the lasts 3 days (including today)"
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/account/movement/db/50/3",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/account/movement/db/50/3",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"account",
+						"movement",
+						"db",
+						"50",
+						"3"
+					]
+				},
+				"description": "Get all transactions for account 50 from the lasts 3 days (including today), using database query."
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/account/transaction/add/50/2020-02-09 10:10/Teste Edison/77.99",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/account/transaction/add/50/2020-02-09 10:10/Teste Edison/77.99",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"account",
+						"transaction",
+						"add",
+						"50",
+						"2020-02-09 10:10",
+						"Teste Edison",
+						"77.99"
+					]
+				},
+				"description": "Create a new transaction in order to test how the application will handle old caches."
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
