@@ -70,11 +70,16 @@ JMeter was configure to use 12 threads simultaneously, as my computer has 12 cor
 
 ### Database Queries
 
-Making requests that will respond using database queries the test take arround 05 minutes and 12 seconds. 
+Making requests that will respond using database queries, it takes arround 05 minutes and 12 seconds. 
 
 ![image2](https://github.com/edbort/code-challenge/blob/master/stress-test/db-test-01.png?raw=true)
 
 ![image2](https://github.com/edbort/code-challenge/blob/master/stress-test/db-test-02.png?raw=true)
+
+### Memcache Queries
+
+Making requests that will respond using memcache queries, it takes only 18 seconds. It was more than 15 times faster.
+
 
 
 
