@@ -11,7 +11,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -49,13 +51,24 @@ public class CacheHandler {
     public void buildCacheForAccount(Long accountId) throws MemCacheException {
         List<AccountMovement> list = new ArrayList<>();
         
+        Calendar startDate = Calendar.getInstance();
+        startDate.add(Calendar.DATE, -90); 
+        Util.setStartTime(startDate);
+        
+        Calendar endDate = Calendar.getInstance();
+        Util.setEndTime(endDate);
+
+        Set<String> createdCacheList = new HashSet<>();
+        
         String aux = "";
-        for(AccountMovement am : repository.findMovementsByAccountId(accountId)) {
+        for(AccountMovement am : repository.findMovementsByAccountIdBetween(accountId, startDate.getTime(), endDate.getTime())) {
             String sDate = format.format(am.getDate());
+            
+            createdCacheList.add(aux);
             
             if (!sDate.equals(aux)) {
                 if (list.size() > 0) {
-                    buildDailyCache(accountId, list);
+                    buildDailyCache(accountId, list, list.get(0).getDate());
                 }
                 
                 list = new ArrayList<>();
@@ -66,9 +79,25 @@ public class CacheHandler {
         }
         
         if (list.size() > 0) {
-            buildDailyCache(accountId, list);
+            buildDailyCache(accountId, list, list.get(0).getDate());
         }
         
+        // There must be a cache for each date, even with no account movements
+        Calendar calendar = Calendar.getInstance();
+        for(int i=1; i<=90; i++) {
+            String sDate = format.format(calendar.getTime());
+            
+            if (!createdCacheList.contains(sDate)) {
+                buildDailyCache(accountId, new ArrayList<>(), calendar.getTime());
+            }
+            
+            calendar.add(Calendar.DATE, -1);
+        }        
+        
+        buildLastNDaysCaches(accountId);
+    }
+    
+    public void buildLastNDaysCaches(Long accountId) throws MemCacheException {
         buildLastNDaysCache(accountId, 3);
         buildLastNDaysCache(accountId, 15);
         buildLastNDaysCache(accountId, 30);
@@ -76,11 +105,21 @@ public class CacheHandler {
         buildLastNDaysCache(accountId, 90);
     }
     
-    public void buildDailyCache(Long accountId, List<AccountMovement> list) throws MemCacheException {
+    public void rebuildAllLastNDaysCaches() throws MemCacheException {
+        log.info("Rebuilding All N Days Caches...");
+        
+        for(Long accountId : repository.findAccount()) {
+            buildLastNDaysCaches(accountId);
+        }
+        
+        log.info("Done!");
+    }
+            
+    public void buildDailyCache(Long accountId, List<AccountMovement> list, Date date) throws MemCacheException {
         CacheDailyBase cacheDailyBase = new CacheDailyBase(accountId);
         cacheDailyBase.setMovementList(list);
         
-        memCacheHandler.setDailyBaseCache(getDailyBaseCacheKey(accountId, list.get(0).getDate()), cacheDailyBase);
+        memCacheHandler.setDailyBaseCache(getDailyBaseCacheKey(accountId, date), cacheDailyBase);
     } 
     
     public void buildLastNDaysCache(Long accountId, int days) throws MemCacheException {

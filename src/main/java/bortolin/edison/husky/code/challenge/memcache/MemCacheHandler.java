@@ -24,6 +24,8 @@ import org.springframework.web.context.annotation.ApplicationScope;
 public class MemCacheHandler {
 
     private static final Logger log = LoggerFactory.getLogger(MemCacheHandler.class);
+    
+    private static final Long TIMEOUT = 300L;
 
     private XMemcachedClient mc;
     
@@ -110,10 +112,10 @@ public class MemCacheHandler {
     
     public CacheLastNDays getLastNDaysCache(String key) throws MemCacheException {
         try {
-            String content = mc.get(key);
+            String content = mc.get(key, TIMEOUT);
             
             if (content == null) {
-                return null;
+                throw new MemCacheException("Cache is not reliable");
             }
             
             return gson.fromJson(content, CacheLastNDays.class);
@@ -128,8 +130,9 @@ public class MemCacheHandler {
         try {
             Map<String, String> aux = mc.get(keys);
             
-            if (result == null) {
-                return null;
+            // All requested keys should be returned
+            if (aux.size() != keys.size()) {
+                throw new MemCacheException("Cache is not reliable. Requested " + keys.size() + " keys, received " + aux.size());
             }
             
             aux.forEach((String k, String v) -> {
@@ -149,8 +152,9 @@ public class MemCacheHandler {
         try {
             Map<String, String> aux = mc.get(keys);
             
-            if (aux == null) {
-                return null;
+            // All requested keys should be returned
+            if (aux.size() != keys.size()) {
+                throw new MemCacheException("Cache is not reliable. Requested " + keys.size() + " keys, received " + aux.size());
             }
             
             aux.forEach((String k, String v) -> {

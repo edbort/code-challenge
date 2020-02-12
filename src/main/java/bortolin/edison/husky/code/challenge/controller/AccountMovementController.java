@@ -41,7 +41,12 @@ public class AccountMovementController {
     public ResponseEntity<List<Long>> accounts() {
         return ResponseEntity.ok(repository.findAccount());
     }    
-   
+
+    @RequestMapping("/account/cache")
+    public ResponseEntity<CacheDailyBase> accountCache(String key) throws MemCacheException {
+        CacheDailyBase result = memCacheHandler.getDailyBaseCache(key);
+        return ResponseEntity.ok(result);
+    }   
     @RequestMapping("/account/movement/date")
     public ResponseEntity<CacheDailyBase> accounts(Long accountId, String date) throws MemCacheException {
         Date baseDate = null;
@@ -62,28 +67,27 @@ public class AccountMovementController {
         return ResponseEntity.ok(result);
     }
 
-    @RequestMapping("/account/cache")
-    public ResponseEntity<CacheDailyBase> accountCache(String key) throws MemCacheException {
-        CacheDailyBase result = memCacheHandler.getDailyBaseCache(key);
-        return ResponseEntity.ok(result);
-    }
-    
     @RequestMapping("/account/movement/{id}/{days}")
     public ResponseEntity<GsonResponseList<AccountMovement>> accountMovementDays(@PathVariable Long id, @PathVariable int days) throws MemCacheException {
-        GsonResponseList<AccountMovement> result = new GsonResponseList<>(true);
-        
-        String key = cacheHandler.getLastNDaysCacheKey(id, days);
-        
-        CacheLastNDays cacheLastNDays = memCacheHandler.getLastNDaysCache(key);
-        if (cacheLastNDays == null) {
-            return ResponseEntity.noContent().build();
-        }
-        
-        List<AccountMovement> s = memCacheHandler.getMovementListOf(cacheLastNDays.getCacheDailyBaseKeyList());
-        Collections.sort(s);
+        try {
+            GsonResponseList<AccountMovement> result = new GsonResponseList<>(true);
+            
+            String key = cacheHandler.getLastNDaysCacheKey(id, days);
 
-        result.setList(s);
-        return ResponseEntity.ok(result);
+            CacheLastNDays cacheLastNDays = memCacheHandler.getLastNDaysCache(key);
+            if (cacheLastNDays == null) {
+                return ResponseEntity.noContent().build();
+            }
+
+            List<AccountMovement> s = memCacheHandler.getMovementListOf(cacheLastNDays.getCacheDailyBaseKeyList());
+            Collections.sort(s);
+
+            result.setList(s);
+            return ResponseEntity.ok(result);
+        } catch (Exception ex) {
+            log.error("Erro while get cached of account", ex);
+            return accountMovementDBDays(id, days);
+        }
     }
     
     @RequestMapping("/account/movement/db/{id}/{days}")
