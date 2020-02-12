@@ -72,6 +72,9 @@ JMeter was configure to use 12 threads simultaneously, as my computer has 12 cor
 
 Making requests that will respond using database queries the test take arround 05 minutes and 12 seconds. 
 
-![image2](https://user-images.githubusercontent.com/5516900/28625071-70c1dbee-721b-11e7-8154-0dab00e37583.png)
+![image2](https://github.com/edbort/code-challenge/blob/master/stress-test/db-test-01.png?raw=true)
+
+![image2](https://github.com/edbort/code-challenge/blob/master/stress-test/db-test-02.png?raw=true)
+
 
 
