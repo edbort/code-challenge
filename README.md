@@ -75,12 +75,13 @@ The account id and the desired period was randomly defined.
 
 The JMeter project file could be downloaded [here](https://github.com/edbort/code-challenge/blob/master/stress-test/Husky%20Challenge%20Stress%20Test.jmx)
 
-**After perform the test using a query database method (localhost:8080/account/movement/db/50/3) and perform another test using memcache method, as describe bellow, I realized that the database query method was harmed since I've forgot to create an  index using account_id and date fields from account_movement table. After creating the index, the database query test performs faster than the other one in my computer probably because I'am using a 32Gb of RAM and a very fast SSD (Samsung NVIe). So, I will keep the results only to show that I know how to measure and perform stress tests.**
-
+**After perform the test using a query database method (localhost:8080/account/movement/db/account_id/period) and perform another test using memcache method (localhost:8080/account/movement/account_id/period), as describe bellow, I realized that the database query method was harmed since I've forgot to create an index using account_id and date fields from account_movement table. After creating the index, the database query test performs faster than the other one in my computer probably because I'am using a 32Gb of RAM and a very fast SSD (Samsung NVIe). So, I will keep the results only to show that I know how to perform some stress tests.**
 
 ### Database Queries
 
-~~Making requests that will respond using database queries, it takes arround 05 minutes and 12 seconds.~~
+~~Making requests that will respond using database queries takes arround 05 minutes and 12 seconds.~~
+
+Making requests that will respond using database queries (with the appropriate index) only takes 10 seconds. It was faster than memcache probably because of my computer configuration and because every call to memcache needs two requests when the other only needs one request to the database.
 
 ![image2](https://github.com/edbort/code-challenge/blob/master/stress-test/db-test-01.png?raw=true)
 
