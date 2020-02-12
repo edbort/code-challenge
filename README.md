@@ -73,7 +73,7 @@ HTTP Request Example: localhost:8080/account/movement/50/3
 ```
 The account id and the desired period was randomly defined.
 
-The JMeter project file could be downloaded here  
+The JMeter project file could be downloaded [here](https://github.com/edbort/code-challenge/blob/master/stress-test/Husky%20Challenge%20Stress%20Test.jmx)
 
 ### Database Queries
 
