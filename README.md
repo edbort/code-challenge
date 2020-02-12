@@ -75,9 +75,12 @@ The account id and the desired period was randomly defined.
 
 The JMeter project file could be downloaded [here](https://github.com/edbort/code-challenge/blob/master/stress-test/Husky%20Challenge%20Stress%20Test.jmx)
 
+**After perform the test using a query database method (localhost:8080/account/movement/db/50/3) and perform another test using memcache method, as describe bellow, I realized that the database query method was harmed since I've forgot to create an  index using account_id and date fields from account_movement table. After creating the index, the database query test performs faster than the other one in my computer probably because I'am using a 32Gb of RAM and a very fast SSD (Samsung NVIe). So, I will keep the results only to show that I know how to measure and perform stress tests.**
+
+
 ### Database Queries
 
-Making requests that will respond using database queries, it takes arround 05 minutes and 12 seconds. 
+~~Making requests that will respond using database queries, it takes arround 05 minutes and 12 seconds.~~
 
 ![image2](https://github.com/edbort/code-challenge/blob/master/stress-test/db-test-01.png?raw=true)
 
@@ -85,7 +88,7 @@ Making requests that will respond using database queries, it takes arround 05 mi
 
 ### Memcache Queries
 
-Making requests that will respond using memcache queries, it takes only 18 seconds. It was more than 15 times faster.
+Making requests that will respond using memcache queries, it takes only 18 seconds. ~~It was more than 15 times faster.~~
 
 ![image2](https://github.com/edbort/code-challenge/blob/master/stress-test/db-test-03.png?raw=true)
 
