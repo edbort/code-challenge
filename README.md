@@ -64,6 +64,14 @@ Take a look at postman file (or Java Classes at controller package) to find out 
 
 The DailyBaseCache is the is the last, the smallest doll, and represents all moviments for an specific account, for a specific date (single day).
 
-to be continued
+## Stress Test
+
+JMeter was configure to use 12 threads simultaneously, as my computer has 12 cores. Each thread should make 5000 requests to the server.
+
+### Database Queries
+
+Making requests that will respond using database queries the test take arround 05 minutes and 12 seconds. 
+
+![image2](https://user-images.githubusercontent.com/5516900/28625071-70c1dbee-721b-11e7-8154-0dab00e37583.png)
 
 
