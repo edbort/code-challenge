@@ -1,15 +1,15 @@
 # Husky challenge implementation!
 
-Here it is my implementation of Husky challenge, using Java with SpringBoot.
+Here it is my implementation of Husky challenge using Java with SpringBoot.
 
-## Requirement
+## Requirements
 
 In order to build and run you will need:
 
-1. A Postgres database.
-2. A Memcache daemon (memcached on linux).
-3. Java 8.
-4. Maven.
+1. A Postgres database
+2. A Memcache daemon (memcached on linux)
+3. Java 8
+4. Maven
 
 ## Build and Run
 
@@ -28,7 +28,7 @@ memcache.host=localhost
 memcache.port=11211
 ```
 
-A postgres database should be create before running the application. I also included a MySQL driver, despite my will.
+Create an specifique database on Postgres to use within the application. The default configuration will try to connect to **husky-code-challene**.
 
 Java 8 and Maven should already be installed and available on shell. 
 
@@ -40,19 +40,29 @@ mvn package
 
 I could send you guys the final JAR file so you don't need to care about the compilation proccess.
 
-The server (an embedded tomcat) will listen to TCP port 8080 as default, but you can easly change that.
+The server (an embedded Tomcat) will listen to TCP port 8080 as default, but you can easly change it.
 
 ```
 java -jar ./target/husky-code-challenge-0.0.1-SNAPSHOT.jar --server.port=8080
 ```
 
-At the moment, the application does not expected any kind of authentication from MemCache server. You can only set the host and port to connect to.
+At the moment, the application does not expect any kind of authentication from MemCache server. You can only set the host and  the port to connect to.
 
-As soon as the application started, for the first time, a new table will be created in the specified database and a lot of records (mock data) will be created. It can take some time, please be patient. Something arround 400.000 will be created for tests purposes.
+As soon as the application starts, for the first time, a new table will be created in the specified database and a lot of records (mock data) will be created. It can take some time, please be patient. Something arround 400.000 records will be created for tests purposes.
 
-After that, the App will build all caches for all accounts (200 at the moment). For each account, a small cache will be created in order to grouping, per day, all account movements for a specific date. Caches for the lasts 3, 15, 30, 60 and 90 days (including today) will also be created. 
+After that, the App will build all caches for all accounts (200 accounts). For each account, a small cache will be created in order to grouping, per day, all account movements for a specific date. Caches for the lasts 3, 15, 30, 60 and 90 days will also be created. 
 
-The message "Application is Ready!" will be displayed after the boot proccess. 
+The message **"Application is Ready!"** will be displayed after the boot proccess is finished.
+
+## The Cache Strategy Implementation
+
+The **DailyBaseCache** is the the last, the smallest doll, and represents all moviments for an specific account, for a specific date (a single day). This cache is built on application's boot and it is seted to never expires. Whe a new transaction is created the DailyBaseCache, based on transaction date, will also be updated. This cache's key is defined using account's id and a date formated with YYYMMDD. Example: **50-20200210** // Account id = 50, Date = 2020-02-10
+
+The other cache is called **CacheLastNDays** and contains the keys for all other **DailyBaseCache**. The application will create caches for the lasts **3**, **15**, **30**, **60** and **90** days on application's boot process, for each account in the system. Every day, at 00:00:00, all these caches will expires and a new ones will be created. As it contains only the keys for the others caches, it does not need to be updated when a new transaction is created. This cache's key is defined using accoun's id and the number os days followed by the letter **d**. Example: **50-3d** // Account id = 50, Period = The lasts 3 days.
+
+If the MemCache server is not available at the application's boot proccess, or if the MemCache server becomes unavailable in some time, it will not crash the system. The App will remain working respond to requests using database queries.
+
+An admin API was created to maintain MemCache server correctly integrated. 
 
 ## Testing
 
@@ -60,9 +70,6 @@ Take a look at postman file (or Java Classes at controller package) to find out 
 
 [Postman file](https://github.com/edbort/code-challenge/blob/master/Husky%20Challeng%20Test.postman_collection.json)
 
-## The implementation
-
-The DailyBaseCache is the is the last, the smallest doll, and represents all moviments for an specific account, for a specific date (single day).
 
 ## Stress Test
 
