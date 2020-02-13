@@ -36,17 +36,7 @@ public class AccountMovementController {
 
     @Autowired
     private CacheHandler cacheHandler;
-            
-    @RequestMapping("/accounts")
-    public ResponseEntity<List<Long>> accounts() {
-        return ResponseEntity.ok(repository.findAccount());
-    }    
-
-    @RequestMapping("/account/cache")
-    public ResponseEntity<CacheDailyBase> accountCache(String key) throws MemCacheException {
-        CacheDailyBase result = memCacheHandler.getDailyBaseCache(key);
-        return ResponseEntity.ok(result);
-    }   
+ 
     @RequestMapping("/account/movement/date")
     public ResponseEntity<CacheDailyBase> accounts(Long accountId, String date) throws MemCacheException {
         Date baseDate = null;

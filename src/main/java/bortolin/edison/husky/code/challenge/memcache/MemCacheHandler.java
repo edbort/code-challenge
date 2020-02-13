@@ -4,12 +4,14 @@ import bortolin.edison.husky.code.challenge.cache.CacheDailyBase;
 import bortolin.edison.husky.code.challenge.cache.CacheLastNDays;
 import bortolin.edison.husky.code.challenge.entity.AccountMovement;
 import bortolin.edison.husky.code.challenge.util.Exclude;
+import bortolin.edison.husky.code.challenge.util.Util;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import net.rubyeye.xmemcached.XMemcachedClient;
@@ -26,7 +28,7 @@ public class MemCacheHandler {
     private static final Logger log = LoggerFactory.getLogger(MemCacheHandler.class);
     
     private static final Long TIMEOUT = 300L;
-
+    
     private XMemcachedClient mc;
     
     @Value("${memcache.host}")
@@ -46,7 +48,7 @@ public class MemCacheHandler {
         try {
             mc = new XMemcachedClient(host, port);
             connected = true;
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             connected = false;
             throw new MemCacheException("Can't connect to Memcache on " + host + ":" + port, ex);
         }
@@ -80,7 +82,7 @@ public class MemCacheHandler {
         checkConnection();
         
         try {
-            mc.set(key, 99999, gson.toJson(cacheDailyBase));
+            mc.set(key, 0, gson.toJson(cacheDailyBase)); // Never Expires
         } catch (Exception ex) {
             throw new MemCacheException("Memcache error", ex);
         }
@@ -104,7 +106,7 @@ public class MemCacheHandler {
         checkConnection();
         
         try {
-            mc.set(key, 99999, gson.toJson(cacheLastNDays));
+            mc.set(key, expireToday(), gson.toJson(cacheLastNDays)); // Until today 23h59m55s
         } catch (Exception ex) {
             throw new MemCacheException("Memcache error", ex);
         }
@@ -168,6 +170,22 @@ public class MemCacheHandler {
         return result;
     }
 
+    public Object get(String key) throws MemCacheException {
+        try {
+            return mc.get(key, TIMEOUT);
+        } catch (Exception ex) {
+            throw new MemCacheException("Memcache error", ex);
+        }
+    }
+        
+    public void invalidade(String key) throws MemCacheException {
+        try {
+            mc.delete(key);
+        } catch (Exception ex) {
+            throw new MemCacheException("Memcache error", ex);
+        }
+    }
+    
     public void flushAll() throws MemCacheException {
         try {
             mc.flushAll();
@@ -175,5 +193,11 @@ public class MemCacheHandler {
             throw new MemCacheException("Memcache error", ex);
         }
     }
+
+    private int expireToday() {
+        Calendar c = Calendar.getInstance();
+        Util.setEndTime(c);
+        return Math.round((c.getTimeInMillis() - Calendar.getInstance().getTimeInMillis())/1000);
+   }
     
 }
