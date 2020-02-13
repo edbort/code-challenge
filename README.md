@@ -40,7 +40,7 @@ mvn package -DskipTests
 
 **I could send you guys the final JAR file so you don't need to care about the compilation proccess.**
 
-The parameter **-DskipTests** is mandatory at the first time because the table and the mock data will be created only after the first execution. After that, running the coomand **mvn package** will perform the created Unit Test case in order to check if the requests is cached the result, as expected. 
+The parameter **-DskipTests** is mandatory at the first time because the table and the mock data will be created only after the first execution. After that, running the coomand **mvn package** will perform the created [Unit Test case](https://github.com/edbort/code-challenge/blob/master/src/test/java/bortolin/edison/husky/code/challenge/test/CacheTest.java) in order to check if the requests is cached the result, as expected. 
 
 The server (an embedded Tomcat) will listen to TCP port 8080 as default, but you can easly change it.
 
