@@ -6,72 +6,136 @@
 	},
 	"item": [
 		{
-			"name": "localhost:8080/account/movement/50/3",
+			"name": "Get the lasts N days account movement - Cached queries",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/account/movement/50/3",
+					"raw": "{{server}}:{{port}}/account/movement/{{account_id}}/{{n_days}}",
 					"host": [
-						"localhost"
+						"{{server}}"
 					],
-					"port": "8080",
+					"port": "{{port}}",
 					"path": [
 						"account",
 						"movement",
-						"50",
-						"3"
+						"{{account_id}}",
+						"{{n_days}}"
 					]
 				},
-				"description": "Get all account movement from the lasts 3 days (including today)"
+				"description": "Get all transactions for an specific account from the lasts N days (including today). \n\nIf MemCache server is available and there is no cache problem, the cached parameter in result should be returned as true."
 			},
 			"response": []
 		},
 		{
-			"name": "localhost:8080/account/movement/db/50/3",
+			"name": "Get the lasts N days account movement - Database query",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/account/movement/db/50/3",
+					"raw": "{{server}}:{{port}}/account/movement/db/{{account_id}}/{{n_days}}",
 					"host": [
-						"localhost"
+						"{{server}}"
 					],
-					"port": "8080",
+					"port": "{{port}}",
 					"path": [
 						"account",
 						"movement",
 						"db",
-						"50",
-						"3"
+						"{{account_id}}",
+						"{{n_days}}"
 					]
 				},
-				"description": "Get all transactions for account 50 from the lasts 3 days (including today), using database query."
+				"description": "Get all transactions for an specific account from the lasts N days (including today), using database query method.\n"
 			},
 			"response": []
 		},
 		{
-			"name": "localhost:8080/account/transaction/add/50/2020-02-09 10:10/Teste Edison/77.99",
+			"name": "Create New Transaction",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/account/transaction/add/50/2020-02-09 10:10/Teste Edison/77.99",
+					"raw": "{{server}}:{{port}}/account/transaction/add/{{account_id}}/2020-02-09 10:10/Teste Edison/77.99",
 					"host": [
-						"localhost"
+						"{{server}}"
 					],
-					"port": "8080",
+					"port": "{{port}}",
 					"path": [
 						"account",
 						"transaction",
 						"add",
-						"50",
+						"{{account_id}}",
 						"2020-02-09 10:10",
 						"Teste Edison",
 						"77.99"
 					]
 				},
 				"description": "Create a new transaction in order to test how the application will handle old caches."
+			},
+			"response": []
+		},
+		{
+			"name": "Cache  - Get a stored object",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}:{{port}}/admin/cache/{{account_id}}-{{n_days}}d",
+					"host": [
+						"{{server}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"admin",
+						"cache",
+						"{{account_id}}-{{n_days}}d"
+					]
+				},
+				"description": "Cache ADMIN - Get a object from MemCache as it was stored"
+			},
+			"response": []
+		},
+		{
+			"name": "Cache - Remove a stored object",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{server}}:{{port}}/admin/cache/{{account_id}}-{{n_days}}d",
+					"host": [
+						"{{server}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"admin",
+						"cache",
+						"{{account_id}}-{{n_days}}d"
+					]
+				},
+				"description": "Cache ADMIN - Remove a stored object from MemCache server"
+			},
+			"response": []
+		},
+		{
+			"name": "Cache - Build all caches for an Account",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}:{{port}}/admin/cache/build/{{account_id}}",
+					"host": [
+						"{{server}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"admin",
+						"cache",
+						"build",
+						"{{account_id}}"
+					]
+				},
+				"description": "Cache ADMIN - Rebuild all caches for an specific account"
 			},
 			"response": []
 		}
