@@ -71,7 +71,8 @@ An admin API was created to maintain MemCache server correctly integrated.
 Take a look at postmans files (or Java Classes at controller package) to find out what requests could be made.
 
 [Postman file](https://github.com/edbort/code-challenge/blob/master/Husky%20Challeng%20Test.postman_collection.json)
-[Postman Environment] (https://github.com/edbort/code-challenge/blob/master/Husky%20Challenge%20Test.postman_environment.json)
+
+[Postman Environment](https://github.com/edbort/codechallenge/blob/master/Husky%20Challenge%20Test.postman_environment.json)
 
 ## Stress Test
 
