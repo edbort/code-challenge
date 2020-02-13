@@ -66,9 +66,9 @@ If the MemCache server is not available at the application's boot proccess, or i
 
 An admin API was created to maintain MemCache server correctly integrated. 
 
-## Testing
+## Using the API
 
-Take a look at postman file (or Java Classes at controller package) to find out what could be done.
+Take a look at postman file (or Java Classes at controller package) to find out what requests could be made.
 
 [Postman file](https://github.com/edbort/code-challenge/blob/master/Husky%20Challeng%20Test.postman_collection.json)
 
@@ -84,7 +84,7 @@ The account id and the desired period was randomly defined.
 
 The JMeter project file could be downloaded [here](https://github.com/edbort/code-challenge/blob/master/stress-test/Husky%20Challenge%20Stress%20Test.jmx)
 
-**After perform the test using a query database method (localhost:8080/account/movement/db/account_id/period) and perform another test using memcache method (localhost:8080/account/movement/account_id/period), as describe bellow, I realized that the database query method was harmed since I've forgot to create an index using account_id and date fields from account_movement table. After creating the index, the database query test performs faster than the other one in my computer probably because I'am using a 32Gb of RAM and a very fast SSD (Samsung NVIe). So, I will keep the results only to show that I know how to perform some stress tests.**
+**After perform the test using a query database method (localhost:8080/account/movement/db/account_id/period) and perform another test using MemCache method (localhost:8080/account/movement/account_id/period), as describe bellow, I realized that the database query method was harmed since I've forgot to create an index using account_id and date fields from account_movement table, forcing the Postgres to perform a full scann. After creating the index, the database query test performs faster than the MemCache. So, I will keep the results only to show that I know how to perform some stress tests.**
 
 ### Database Queries
 
